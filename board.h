@@ -2,7 +2,7 @@
 #define BOARD_H
 #include "tile.h"
 
-enum class GameState {play, won, lost};
+enum class GameState {setup, play, won, lost};
 
 class Board {
 public:
@@ -14,7 +14,7 @@ public:
     short tileSize;
     Board ();
     void drawBoard(); // funkcja rysująca planszę
-    void placeMines(); // funkcja umieszczająca bomby
+    void placeMines(short, short); // funkcja umieszczająca bomby
     void triggerEvent(short, short); // odsłonięcie pola
 };
 

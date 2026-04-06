@@ -8,12 +8,12 @@ Color hiddenTileColor = {140, 140, 140, 255};
 Color revealedTileColor = {100, 100, 100, 255};
 Color mineColor = {255, 55, 55, 255};
 
-bool showMines = false; // widoczność bomb po odpaleniu okna gry - do testowania
+bool showMines = true; // widoczność bomb po odpaleniu okna gry - do testowania
 
 Board::Board () {
     boardSize = 540;
     tileSize = boardSize/9 - 2; // -2 bo chcę zrobić margines
-    currentGameState = GameState::play;
+    currentGameState = GameState::setup;
 }
 
 void Board::drawBoard () {
@@ -41,23 +41,31 @@ void Board::drawBoard () {
     }
 }
 
-void Board::placeMines() {
+void Board::placeMines(short tilePosX, short tilePosY) { // ustawienie bomb, nie mogą być ustawione na polu od którego rozpoczynamy grę
     srand( time( NULL ) );
     short minesToPlace = 10;
     while (minesToPlace) {
         short randX =( std::rand() % 9 ) + 0;
         short randY =( std::rand() % 9 ) + 0;
-        if(tileGrid[randX][randY].isMine == false){
+        if(tileGrid[randX][randY].isMine == false && randX != tilePosX && randY != tilePosY){
             tileGrid[randX][randY].isMine = true;
             --minesToPlace;
         }
     }
 }
 
-void Board::triggerEvent (short mouseX, short mouseY) {
+void Board::triggerEvent (short mouseX, short mouseY) { // główna funkcja odpowiadająca za wydarzenia w grze
+
     mouseX -= originX;
     mouseY -= originY;
-    short targetTileX = (short)(mouseX / (tileSize+2));
+    // obliczenie na jakim Tile'u kliknięto
+    short targetTileX = (short)(mouseX / (tileSize+2)); 
     short targetTileY = (short)(mouseY / (tileSize+2));
+
+    if(currentGameState == GameState::setup) {
+        placeMines(targetTileX, targetTileY);
+        currentGameState = GameState::play;
+    }
+    
     tileGrid[targetTileX][targetTileY].currentState = TileState::revealed;
 }
