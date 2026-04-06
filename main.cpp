@@ -1,16 +1,21 @@
 #include <raylib.h>
 #include "board.h"
+#include <iostream>
 
 Color bgColor = {40, 40, 40, 255};
 
 int main() {
     InitWindow(560, 560, "Minesweeper"); // Stworzenie okna gry (width, height, title)
     SetTargetFPS(60); // frames per second
+    Board board = Board(); // stworzenie planszy
+    board.placeMines();
 
     // Game Loop
     while (WindowShouldClose()==false) {
 
-        Board board = Board();
+        // if(IsMouseButtonPressed(0)) {
+        //     std::cout << "Pozycja myszy: " << GetMouseX() << ", " << GetMouseY() << std::endl;
+        // }
 
         BeginDrawing();
         ClearBackground(bgColor);
