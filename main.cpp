@@ -14,7 +14,7 @@ int main() {
 
         if(IsMouseButtonPressed(0)) {
             board.triggerEvent(GetMouseX(), GetMouseY());
-            // std::cout << GetMouseX() << ", " << GetMouseY() << std::endl;
+            //std::cout << GetMouseX() << ", " << GetMouseY() << std::endl;
         }
 
         BeginDrawing();

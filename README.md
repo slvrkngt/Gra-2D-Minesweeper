@@ -10,6 +10,9 @@ Projekt na Programowanie 2. Laboratorium, grupa nr 1
 ## Plan obron
 ### 1-sza obrona:
 * Stworzenie okna gry
+* Rysowanie planszy
+* Losowe generowanie bomb
+* Obsługa stanów gry: setup, play
 
 ## Autorka
 Karolina Łakomy

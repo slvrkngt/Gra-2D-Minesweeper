@@ -17,8 +17,8 @@ Board::Board () {
 }
 
 void Board::drawBoard () {
-    short originX = 10;
-    short originY = 10;
+    originX = 10;
+    originY = 10;
     DrawRectangle(originX, originY, boardSize, boardSize, boardColor);
     for(short x=0; x<9; ++x) {
         for(short y=0; y<9; ++y) {
@@ -56,16 +56,21 @@ void Board::placeMines(short tilePosX, short tilePosY) { // ustawienie bomb, nie
 
 void Board::triggerEvent (short mouseX, short mouseY) { // główna funkcja odpowiadająca za wydarzenia w grze
 
-    mouseX -= originX;
-    mouseY -= originY;
-    // obliczenie na jakim Tile'u kliknięto
-    short targetTileX = (short)(mouseX / (tileSize+2)); 
-    short targetTileY = (short)(mouseY / (tileSize+2));
+    // jeżeli kliknięto w obrębie planszy
+    bool boardClicked = mouseX >= originX && mouseX <= originX + boardSize && mouseY >= originY && mouseY <= originY + boardSize;
+    if (boardClicked) {
+        mouseX -= originX;
+        mouseY -= originY;
+        // obliczenie na jakim Tile'u kliknięto
+        short targetTileX = (short)(mouseX / (tileSize+2)); 
+        short targetTileY = (short)(mouseY / (tileSize+2));
 
-    if(currentGameState == GameState::setup) {
-        placeMines(targetTileX, targetTileY);
-        currentGameState = GameState::play;
+        if(currentGameState == GameState::setup) {
+           placeMines(targetTileX, targetTileY);
+            currentGameState = GameState::play;
+        }
+    
+        tileGrid[targetTileX][targetTileY].currentState = TileState::revealed;
     }
     
-    tileGrid[targetTileX][targetTileY].currentState = TileState::revealed;
 }
