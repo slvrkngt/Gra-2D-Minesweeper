@@ -5,7 +5,7 @@
 
 Color boardColor = {90, 90, 90, 255};
 Color hiddenTileColor = {140, 140, 140, 255};
-Color revealedTileColor = {90, 90, 90, 255};
+Color revealedTileColor = {100, 100, 100, 255};
 Color mineColor = {255, 55, 55, 255};
 
 bool showMines = false; // widoczność bomb po odpaleniu okna gry - do testowania
@@ -24,17 +24,18 @@ void Board::drawBoard () {
         for(short y=0; y<9; ++y) {
             short tileOriginX = originX + (boardSize/9) * x + 1;
             short tileOriginY = originY + (boardSize/9) * y + 1;
+            short mineOriginX = originX + (boardSize/9) * x + 1 + tileSize/2;
+            short mineOriginY = originY + (boardSize/9) * y + 1 + tileSize/2;
+            
             if (tileGrid[x][y].currentState == TileState::hidden) {
+                DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, hiddenTileColor);
                 if (tileGrid[x][y].isMine && showMines)
-                    DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, mineColor);
-                else
-                    DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, hiddenTileColor);
+                    DrawCircle(mineOriginX, mineOriginY, tileSize/10, BLACK);
             }
             if (tileGrid[x][y].currentState == TileState::revealed) {
+                DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, revealedTileColor);
                 if (tileGrid[x][y].isMine)
-                    DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, mineColor);
-                else
-                    DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, revealedTileColor);
+                    DrawCircle(mineOriginX, mineOriginY, tileSize/3, mineColor);
             }
         }
     }
