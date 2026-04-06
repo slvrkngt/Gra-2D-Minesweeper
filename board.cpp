@@ -8,6 +8,8 @@ Color hiddenTileColor = {140, 140, 140, 255};
 Color revealedTileColor = {90, 90, 90, 255};
 Color mineColor = {255, 55, 55, 255};
 
+bool showMines = false; // widoczność bomb po odpaleniu okna gry - do testowania
+
 Board::Board () {
     boardSize = 540;
     tileSize = boardSize/9 - 2; // -2 bo chcę zrobić margines
@@ -23,7 +25,7 @@ void Board::drawBoard () {
             short tileOriginX = originX + (boardSize/9) * x + 1;
             short tileOriginY = originY + (boardSize/9) * y + 1;
             if (tileGrid[x][y].currentState == TileState::hidden) {
-                if (tileGrid[x][y].isMine)
+                if (tileGrid[x][y].isMine && showMines)
                     DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, mineColor);
                 else
                     DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, hiddenTileColor);
