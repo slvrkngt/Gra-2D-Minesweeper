@@ -7,8 +7,9 @@ Color boardColor = {90, 90, 90, 255};
 Color hiddenTileColor = {140, 140, 140, 255};
 Color revealedTileColor = {100, 100, 100, 255};
 Color mineColor = {255, 55, 55, 255};
+Color lostMessageBoxColor = {255, 55, 55, 100};
 
-bool showMines = true; // widoczność bomb po odpaleniu okna gry - do testowania
+bool showMines = false; // widoczność bomb po odpaleniu okna gry - do testowania
 
 Board::Board () {
     boardSize = 540;
@@ -39,6 +40,10 @@ void Board::drawBoard () {
             }
         }
     }
+
+    if(currentGameState == GameState::lost) {
+        youLost();
+    }
 }
 
 void Board::placeMines(short tilePosX, short tilePosY) { // ustawienie bomb, nie mogą być ustawione na polu od którego rozpoczynamy grę
@@ -65,12 +70,25 @@ void Board::triggerEvent (short mouseX, short mouseY) { // główna funkcja odpo
         short targetTileX = (short)(mouseX / (tileSize+2)); 
         short targetTileY = (short)(mouseY / (tileSize+2));
 
-        if(currentGameState == GameState::setup) {
+        if(currentGameState == GameState::setup) { // co się dzieje przed rozpoczęciem gry
            placeMines(targetTileX, targetTileY);
             currentGameState = GameState::play;
         }
     
         tileGrid[targetTileX][targetTileY].currentState = TileState::revealed;
+        
+        if(currentGameState == GameState::play) { // co się dzieje w trakcie gry
+            if(tileGrid[targetTileX][targetTileY].isMine) {
+                currentGameState = GameState::lost;
+            }
+        }
     }
     
+}
+
+void Board::youLost() {
+    short messageBoxPosX = boardSize/5;
+    short messageBoxPosY = boardSize/5;
+    DrawRectangle(messageBoxPosX, messageBoxPosY, 150, 40, lostMessageBoxColor);
+    DrawText("You Lost!", messageBoxPosX+5, messageBoxPosY+5, 30, WHITE);
 }

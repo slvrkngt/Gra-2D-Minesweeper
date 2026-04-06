@@ -12,7 +12,7 @@ Projekt na Programowanie 2. Laboratorium, grupa nr 1
 * Stworzenie okna gry
 * Rysowanie planszy
 * Losowe generowanie bomb
-* Obsługa stanów gry: setup, play
+* Obsługa stanów gry: setup, play, lost
 
 ## Autorka
 Karolina Łakomy
