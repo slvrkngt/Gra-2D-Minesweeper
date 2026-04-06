@@ -8,6 +8,7 @@ public:
     short boardSize;
     short tileSize;
     Board ();
+    void drawBoard(); // funkcja rysująca planszę
 };
 
 #endif
