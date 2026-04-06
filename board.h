@@ -9,11 +9,13 @@ public:
     Tile tileGrid [9][9];
     GameState currentGameState;
     short boardSize;
+    short originX;
+    short originY;
     short tileSize;
     Board ();
     void drawBoard(); // funkcja rysująca planszę
     void placeMines(); // funkcja umieszczająca bomby
-    void revealTile(short, short);
+    void triggerEvent(short, short); // odsłonięcie pola
 };
 
 #endif

@@ -51,6 +51,10 @@ void Board::placeMines() {
     }
 }
 
-void Board::revealTile (short mouseX, short mouseY) {
-    
+void Board::triggerEvent (short mouseX, short mouseY) {
+    mouseX -= originX;
+    mouseY -= originY;
+    short targetTileX = (short)(mouseX / (tileSize+2));
+    short targetTileY = (short)(mouseY / (tileSize+2));
+    tileGrid[targetTileX][targetTileY].currentState = TileState::revealed;
 }

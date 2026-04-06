@@ -13,9 +13,10 @@ int main() {
     // Game Loop
     while (WindowShouldClose()==false) {
 
-        // if(IsMouseButtonPressed(0)) {
-        //     std::cout << "Pozycja myszy: " << GetMouseX() << ", " << GetMouseY() << std::endl;
-        // }
+        if(IsMouseButtonPressed(0)) {
+            board.triggerEvent(GetMouseX(), GetMouseY());
+            // std::cout << GetMouseX() << ", " << GetMouseY() << std::endl;
+        }
 
         BeginDrawing();
         ClearBackground(bgColor);
