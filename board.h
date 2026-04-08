@@ -15,6 +15,7 @@ public:
     Board ();
     void drawBoard(); // funkcja rysująca planszę
     void placeMines(short, short); // funkcja umieszczająca bomby
+    void countNeighbours(); // funkcja licząca bomby sąsiadujące z polem
     void triggerEvent(short, short); // odsłonięcie pola
     void youLost();
 };

@@ -8,7 +8,7 @@ Projekt na Programowanie 2. Laboratorium, grupa nr 1
 * **Środowisko:** Visual Studio Code (MSYS2/MinGW-w64)
 
 ## Plan obron
-### 1-sza obrona:
+### 1-sza i 2-ga obrona:
 * Stworzenie okna gry
 * Rysowanie planszy
 * Losowe generowanie bomb

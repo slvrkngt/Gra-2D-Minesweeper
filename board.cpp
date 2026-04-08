@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <random>
 #include <ctime>
+#include <iostream>
 
 Color boardColor = {90, 90, 90, 255};
 Color hiddenTileColor = {140, 140, 140, 255};
@@ -30,13 +31,25 @@ void Board::drawBoard () {
             
             if (tileGrid[x][y].currentState == TileState::hidden) {
                 DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, hiddenTileColor);
-                if (tileGrid[x][y].isMine && showMines)
-                    DrawCircle(mineOriginX, mineOriginY, tileSize/10, BLACK);
+                if (showMines) {
+                    if (tileGrid[x][y].isMine)
+                        DrawCircle(mineOriginX, mineOriginY, tileSize/10, BLACK);
+                    if (tileGrid[x][y].neighborCount > 0) {
+                        std::string nbCount = std::to_string(tileGrid[x][y].neighborCount);
+                        DrawText(nbCount.c_str(), tileOriginX+5, tileOriginY+5, tileSize/2, BLACK);
+                    }
+                }
+                    
+                
             }
             if (tileGrid[x][y].currentState == TileState::revealed) {
                 DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, revealedTileColor);
                 if (tileGrid[x][y].isMine)
                     DrawCircle(mineOriginX, mineOriginY, tileSize/3, mineColor);
+                if (tileGrid[x][y].neighborCount > 0) {
+                    std::string nbCount = std::to_string(tileGrid[x][y].neighborCount);
+                    DrawText(nbCount.c_str(), tileOriginX+15, tileOriginY+5, tileSize-10, BLACK);
+                }
             }
         }
     }
@@ -59,6 +72,53 @@ void Board::placeMines(short tilePosX, short tilePosY) { // ustawienie bomb, nie
     }
 }
 
+void Board::countNeighbours() { // liczenie sąsiadów - bomb
+    for(short x=0; x<9; ++x) {
+        for(short y=0; y<9; ++y) { 
+            tileGrid[x][y].neighborCount = 0;
+
+            if (x>0 && tileGrid[x-1][y].isMine) { // prawa
+                ++tileGrid[x][y].neighborCount;
+            }
+
+            if (x<8 && tileGrid[x+1][y].isMine) { // lewa
+                ++tileGrid[x][y].neighborCount;
+            }
+
+            if (y>0 && tileGrid[x][y-1].isMine) { // góra
+                ++tileGrid[x][y].neighborCount;
+            }
+
+            if (y<8 && tileGrid[x][y+1].isMine) { // dół
+                ++tileGrid[x][y].neighborCount;
+            }
+
+            if (x>0 && y>0 && tileGrid[x-1][y-1].isMine) { // prawa-góra
+                ++tileGrid[x][y].neighborCount;
+            }
+
+            if (x>0 && y<8 && tileGrid[x-1][y+1].isMine) { // prawa-dół
+                ++tileGrid[x][y].neighborCount;
+            }
+
+            if (x<8 && y>0 && tileGrid[x+1][y-1].isMine) { // lewa-góra
+                ++tileGrid[x][y].neighborCount;
+            }
+
+            if (x<8 && y<8 && tileGrid[x+1][y+1].isMine) { // lewa-dół
+                ++tileGrid[x][y].neighborCount;
+            }
+
+            if (tileGrid[x][y].isMine) {
+               tileGrid[x][y].neighborCount = -1; // jeżeli pole jest bombą, neighborCount = -1
+            }
+
+            // std::cout << tileGrid[x][y].neighborCount << std::endl;
+        }
+    }
+
+}
+
 void Board::triggerEvent (short mouseX, short mouseY) { // główna funkcja odpowiadająca za wydarzenia w grze
 
     // jeżeli kliknięto w obrębie planszy
@@ -72,6 +132,7 @@ void Board::triggerEvent (short mouseX, short mouseY) { // główna funkcja odpo
 
         if(currentGameState == GameState::setup) { // co się dzieje przed rozpoczęciem gry
            placeMines(targetTileX, targetTileY);
+           countNeighbours();
             currentGameState = GameState::play;
         }
     
