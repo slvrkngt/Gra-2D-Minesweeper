@@ -5,10 +5,11 @@
 Color bgColor = {40, 40, 40, 255};
 
 int main() {
-    InitWindow(560, 560, "Minesweeper"); // Stworzenie okna gry (width, height, title)
+    InitWindow(560, 660, "Minesweeper"); // Stworzenie okna gry (width, height, title)
     SetTargetFPS(20); // frames per second
     Board board = Board(); // stworzenie planszy
     Board::flagTexture = LoadTexture("flagTexture.png"); 
+    Board::questionMarkTexture = LoadTexture("questionMarkTexture.png"); 
     Board::revealedTiles = 0;
 
     // Game Loop
@@ -39,6 +40,7 @@ int main() {
     }
 
     UnloadTexture(Board::flagTexture);
+    UnloadTexture(Board::questionMarkTexture);
     CloseWindow(); // Zamknięcie okna gry
     return 0;
 }

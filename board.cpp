@@ -12,7 +12,7 @@ Color lostMessageBoxColor = {255, 55, 55, 100};
 Color wonMessageBoxColor = {30, 180, 30, 100};
 Color flagColor = {255, 55, 55, 255};
 
-bool showMines = true; // widoczność bomb po odpaleniu okna gry - do testowania
+bool showMines = false; // widoczność bomb po odpaleniu okna gry - do testowania
 
 Board::Board () {
     boardSize = 540;
@@ -24,6 +24,7 @@ Board::~Board () {
 }
 
 Texture2D Board::flagTexture;
+Texture2D Board::questionMarkTexture; 
 short Board::revealedTiles;
 
 void Board::drawBoard () {
@@ -37,6 +38,7 @@ void Board::drawBoard () {
             short mineOriginX = originX + (boardSize/9) * x + 1 + tileSize/2;
             short mineOriginY = originY + (boardSize/9) * y + 1 + tileSize/2;
             
+            // =============UKRYTE============
             if (tileGrid[x][y].currentState == TileState::hidden) { // tile ukryty
                 DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, hiddenTileColor);
                 if (showMines) {
@@ -48,7 +50,7 @@ void Board::drawBoard () {
                     }
                 }
                     
-                
+            // =============ODKRYTE============    
             }
             if (tileGrid[x][y].currentState == TileState::revealed) { // tile odsłonięty
                 DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, revealedTileColor);
@@ -59,9 +61,26 @@ void Board::drawBoard () {
                     DrawText(nbCount.c_str(), tileOriginX+15, tileOriginY+5, tileSize-10, BLACK);
                 }
             }
+
+            // =============OFLAGOWANE============
             if (tileGrid[x][y].currentState == TileState::flagged) { // tile oflagowany
                 DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, hiddenTileColor);
                 DrawTextureEx(flagTexture, {(float)tileOriginX, (float)tileOriginY}, 0, 3.5, flagColor);
+
+                if (showMines) {
+                    if (tileGrid[x][y].isMine)
+                        DrawCircle(mineOriginX, mineOriginY, tileSize/10, BLACK);
+                    if (tileGrid[x][y].neighborCount > 0) {
+                        std::string nbCount = std::to_string(tileGrid[x][y].neighborCount);
+                        DrawText(nbCount.c_str(), tileOriginX+5, tileOriginY+5, tileSize/2, BLACK);
+                    }
+                }
+            }
+
+            // =============ZNAK ZAPYTANIA============
+            if (tileGrid[x][y].currentState == TileState::questionMark) { // tile oflagowany
+                DrawRectangle(tileOriginX, tileOriginY, tileSize, tileSize, hiddenTileColor);
+                DrawTextureEx(questionMarkTexture, {(float)tileOriginX, (float)tileOriginY}, 0, 3.5, WHITE);
 
                 if (showMines) {
                     if (tileGrid[x][y].isMine)
@@ -215,10 +234,7 @@ void Board::placeFlag (short mouseX, short mouseY) { // stawianie flagi
         short targetTileX = (short)(mouseX / (tileSize+2)); 
         short targetTileY = (short)(mouseY / (tileSize+2));
 
-        if (tileGrid[targetTileX][targetTileY].currentState == TileState::hidden)
-            tileGrid[targetTileX][targetTileY].currentState = TileState::flagged;
-        else if (tileGrid[targetTileX][targetTileY].currentState == TileState::flagged)
-            tileGrid[targetTileX][targetTileY].currentState = TileState::hidden;
+        tileGrid[targetTileX][targetTileY].flag();
     }
 }
 

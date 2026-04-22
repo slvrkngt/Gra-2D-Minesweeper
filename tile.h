@@ -1,7 +1,7 @@
 #ifndef TILE_H
 #define TILE_H
 
-enum class TileState {hidden, revealed, flagged};
+enum class TileState {hidden, revealed, flagged, questionMark};
 
 class Tile {
 public:
@@ -10,6 +10,7 @@ public:
     TileState currentState;
     Tile ();
     void reveal();
+    void flag();
 };
 
 #endif

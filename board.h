@@ -15,6 +15,7 @@ public:
     short tileSize;
     static short revealedTiles;
     static Texture2D flagTexture; 
+    static Texture2D questionMarkTexture; 
     Board ();
     ~Board ();
     void drawBoard(); // funkcja rysująca planszę

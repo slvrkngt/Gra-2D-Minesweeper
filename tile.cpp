@@ -19,3 +19,18 @@ void Tile::reveal () {
     }
     
 }
+
+void Tile::flag () {
+    if(currentState == TileState::hidden)
+    {
+        currentState = TileState::flagged;
+    }
+    else if (currentState == TileState::flagged)
+    {
+        currentState = TileState::questionMark;
+    }
+    else if (currentState == TileState::questionMark)
+    {
+        currentState = TileState::hidden;
+    }
+}
