@@ -9,6 +9,7 @@ Color hiddenTileColor = {140, 140, 140, 255};
 Color revealedTileColor = {100, 100, 100, 255};
 Color mineColor = {255, 55, 55, 255};
 Color lostMessageBoxColor = {255, 55, 55, 100};
+Color wonMessageBoxColor = {30, 180, 30, 100};
 Color flagColor = {255, 55, 55, 255};
 
 bool showMines = true; // widoczność bomb po odpaleniu okna gry - do testowania
@@ -226,6 +227,15 @@ void Board::youLost() {
     short messageBoxPosY = boardSize/5;
     DrawRectangle(messageBoxPosX, messageBoxPosY, 150, 40, lostMessageBoxColor);
     DrawText("You Lost!", messageBoxPosX+5, messageBoxPosY+5, 30, WHITE);
+}
+
+void Board::checkIfWin() {
+    if(Board::revealedTiles == 71) {
+        short messageBoxPosX = boardSize/5;
+        short messageBoxPosY = boardSize/5;
+        DrawRectangle(messageBoxPosX, messageBoxPosY, 150, 40, wonMessageBoxColor);
+        DrawText("You Won!", messageBoxPosX+5, messageBoxPosY+5, 30, WHITE);
+    }
 }
 
 

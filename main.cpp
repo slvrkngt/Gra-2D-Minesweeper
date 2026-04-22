@@ -28,10 +28,12 @@ int main() {
         if(IsMouseButtonPressed(1)) {
             board.placeFlag(GetMouseX(), GetMouseY());
         }
+        
 
         BeginDrawing();
         ClearBackground(bgColor);
         board.drawBoard();
+        board.checkIfWin();
         
         EndDrawing();
     }

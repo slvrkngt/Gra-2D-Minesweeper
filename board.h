@@ -24,6 +24,8 @@ public:
     void triggerEvent(short, short); // odsłonięcie pola
     void placeFlag(short, short);
     void youLost();
+    void checkIfWin();
+
 };
 
 #endif
