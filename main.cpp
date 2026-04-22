@@ -9,6 +9,7 @@ int main() {
     SetTargetFPS(20); // frames per second
     Board board = Board(); // stworzenie planszy
     Board::flagTexture = LoadTexture("flagTexture.png"); 
+    Board::revealedTiles = 0;
 
     // Game Loop
     while (WindowShouldClose()==false) {

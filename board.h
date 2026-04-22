@@ -13,6 +13,7 @@ public:
     short originX;
     short originY;
     short tileSize;
+    static short revealedTiles;
     static Texture2D flagTexture; 
     Board ();
     ~Board ();

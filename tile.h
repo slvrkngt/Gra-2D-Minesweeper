@@ -9,6 +9,7 @@ public:
     bool isMine;
     TileState currentState;
     Tile ();
+    void reveal();
 };
 
 #endif

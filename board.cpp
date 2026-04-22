@@ -23,6 +23,7 @@ Board::~Board () {
 }
 
 Texture2D Board::flagTexture;
+short Board::revealedTiles;
 
 void Board::drawBoard () {
     originX = 10;
@@ -190,7 +191,7 @@ void Board::triggerEvent (short mouseX, short mouseY) { // główna funkcja odpo
             currentGameState = GameState::play;
         }
     
-        tileGrid[targetTileX][targetTileY].currentState = TileState::revealed;
+        tileGrid[targetTileX][targetTileY].reveal();
         // revealNeighbouring(targetTileX, targetTileY);
         
         
