@@ -13,6 +13,13 @@ Projekt na Programowanie 2. Laboratorium, grupa nr 1
 * Rysowanie planszy
 * Losowe generowanie bomb
 * Obsługa stanów gry: setup, play, lost
+* Implementacja odsłaniania pól
+* Obsługa przegranej
+### 3-cia i 4-ta obrona:
+* Liczenie sąsiadujących bomb
+* Poprawka do losowego generowania bomb
+* Implementacja flagowania pól
+* Obsługa wygranej (liczenie odkrytych pól)
 
 ## Autorka
 Karolina Łakomy
