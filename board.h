@@ -1,6 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 #include "tile.h"
+#include <raylib.h>
 
 enum class GameState {setup, play, won, lost};
 
@@ -12,12 +13,15 @@ public:
     short originX;
     short originY;
     short tileSize;
+    static Texture2D flagTexture; 
     Board ();
+    ~Board ();
     void drawBoard(); // funkcja rysująca planszę
     void placeMines(short, short); // funkcja umieszczająca bomby
     void countNeighbours(); // funkcja licząca bomby sąsiadujące z polem
-    void revealNeighbouring(); // funkcja odsłaniająca sąsiadujące puste pola
+    // void revealNeighbouring(short, short); // funkcja odsłaniająca sąsiadujące puste pola
     void triggerEvent(short, short); // odsłonięcie pola
+    void placeFlag(short, short);
     void youLost();
 };
 

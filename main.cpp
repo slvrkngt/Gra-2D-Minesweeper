@@ -8,6 +8,7 @@ int main() {
     InitWindow(560, 560, "Minesweeper"); // Stworzenie okna gry (width, height, title)
     SetTargetFPS(20); // frames per second
     Board board = Board(); // stworzenie planszy
+    Board::flagTexture = LoadTexture("flagTexture.png"); 
 
     // Game Loop
     while (WindowShouldClose()==false) {
@@ -23,6 +24,10 @@ int main() {
             //std::cout << GetMouseX() << ", " << GetMouseY() << std::endl;
         }
 
+        if(IsMouseButtonPressed(1)) {
+            board.placeFlag(GetMouseX(), GetMouseY());
+        }
+
         BeginDrawing();
         ClearBackground(bgColor);
         board.drawBoard();
@@ -30,6 +35,7 @@ int main() {
         EndDrawing();
     }
 
+    UnloadTexture(Board::flagTexture);
     CloseWindow(); // Zamknięcie okna gry
     return 0;
 }
