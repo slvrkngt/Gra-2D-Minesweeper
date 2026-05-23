@@ -24,10 +24,14 @@ void Tile::flag () {
     if(currentState == TileState::hidden)
     {
         currentState = TileState::flagged;
+        Board::flaggedTiles += 1;
+        // std::cout << Board::flaggedTiles << std::endl;
     }
     else if (currentState == TileState::flagged)
     {
         currentState = TileState::questionMark;
+        Board::flaggedTiles -= 1;
+        // std::cout << Board::flaggedTiles << std::endl;
     }
     else if (currentState == TileState::questionMark)
     {

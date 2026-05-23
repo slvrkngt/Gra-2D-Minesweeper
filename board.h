@@ -14,14 +14,16 @@ public:
     short originY;
     short tileSize;
     static short revealedTiles;
+    static short flaggedTiles;
     static Texture2D flagTexture; 
     static Texture2D questionMarkTexture; 
     Board ();
     ~Board ();
     void drawBoard(); // funkcja rysująca planszę
+    void drawDetails(); // funkcja rysująca szczegóły
     void placeMines(short, short); // funkcja umieszczająca bomby
     void countNeighbours(); // funkcja licząca bomby sąsiadujące z polem
-    // void revealNeighbouring(short, short); // funkcja odsłaniająca sąsiadujące puste pola
+    void revealNeighbouring(short, short); // funkcja odsłaniająca sąsiadujące puste pola
     void triggerEvent(short, short); // odsłonięcie pola
     void placeFlag(short, short);
     void youLost();

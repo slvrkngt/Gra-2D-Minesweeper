@@ -26,6 +26,7 @@ Board::~Board () {
 Texture2D Board::flagTexture;
 Texture2D Board::questionMarkTexture; 
 short Board::revealedTiles;
+short Board::flaggedTiles;
 
 void Board::drawBoard () {
     originX = 10;
@@ -97,6 +98,10 @@ void Board::drawBoard () {
     if(currentGameState == GameState::lost) {
         youLost();
     }
+}
+
+void Board::drawDetails () {
+
 }
 
 void Board::placeMines(short tilePosX, short tilePosY) { // ustawienie bomb, nie mogą być ustawione na polu od którego rozpoczynamy grę
@@ -211,8 +216,8 @@ void Board::triggerEvent (short mouseX, short mouseY) { // główna funkcja odpo
             currentGameState = GameState::play;
         }
     
-        tileGrid[targetTileX][targetTileY].reveal();
-        // revealNeighbouring(targetTileX, targetTileY);
+        // tileGrid[targetTileX][targetTileY].reveal();
+        revealNeighbouring(targetTileX, targetTileY);
         
         
         if(currentGameState == GameState::play) { // co się dzieje w trakcie gry
@@ -247,10 +252,37 @@ void Board::youLost() {
 
 void Board::checkIfWin() {
     if(Board::revealedTiles == 71) {
+        currentGameState = GameState::won;
         short messageBoxPosX = boardSize/5;
         short messageBoxPosY = boardSize/5;
         DrawRectangle(messageBoxPosX, messageBoxPosY, 150, 40, wonMessageBoxColor);
         DrawText("You Won!", messageBoxPosX+5, messageBoxPosY+5, 30, WHITE);
+    }
+}
+
+void Board::revealNeighbouring(short tileX, short tileY) {
+    if (tileX < 0 || tileX >= 9 || tileY < 0 || tileY >= 9) {
+        return;
+    }
+
+    Tile& currentTile = tileGrid[tileX][tileY];
+
+    if (currentTile.currentState != TileState::hidden && currentTile.currentState != TileState::questionMark) {
+        return;
+    }
+
+    currentTile.reveal();
+
+    if (currentTile.neighborCount > 0) {
+        return;
+    }
+
+    for (short dx = -1; dx <= 1; ++dx) {
+        for (short dy = -1; dy <= 1; ++dy) {
+            if (dx == 0 && dy == 0) continue;
+
+            revealNeighbouring(tileX + dx, tileY + dy);
+        }
     }
 }
 

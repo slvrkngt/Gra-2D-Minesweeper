@@ -11,6 +11,7 @@ int main() {
     Board::flagTexture = LoadTexture("flagTexture.png"); 
     Board::questionMarkTexture = LoadTexture("questionMarkTexture.png"); 
     Board::revealedTiles = 0;
+    Board::flaggedTiles = 0;
 
     // Game Loop
     while (WindowShouldClose()==false) {
