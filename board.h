@@ -17,6 +17,8 @@ public:
     static short flaggedTiles;
     static Texture2D flagTexture; 
     static Texture2D questionMarkTexture; 
+    float gameTimer;     
+    short fullSeconds;
     Board ();
     ~Board ();
     void drawBoard(); // funkcja rysująca planszę

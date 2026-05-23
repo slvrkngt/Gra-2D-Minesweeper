@@ -5,7 +5,7 @@
 Color bgColor = {40, 40, 40, 255};
 
 int main() {
-    InitWindow(560, 660, "Minesweeper"); // Stworzenie okna gry (width, height, title)
+    InitWindow(560, 680, "Minesweeper"); // Stworzenie okna gry (width, height, title)
     SetTargetFPS(20); // frames per second
     Board board = Board(); // stworzenie planszy
     Board::flagTexture = LoadTexture("flagTexture.png"); 

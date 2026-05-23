@@ -18,6 +18,9 @@ Board::Board () {
     boardSize = 540;
     tileSize = boardSize/9 - 2; // -2 bo chcę zrobić margines
     currentGameState = GameState::setup;
+
+    gameTimer = 0.0f;
+    fullSeconds = 0;
 }
 
 Board::~Board () {
@@ -29,9 +32,17 @@ short Board::revealedTiles;
 short Board::flaggedTiles;
 
 void Board::drawBoard () {
+
+    if (currentGameState == GameState::play) {
+        gameTimer += GetFrameTime();
+        fullSeconds = (short)gameTimer; 
+    }
+
     originX = 10;
     originY = 10;
     DrawRectangle(originX, originY, boardSize, boardSize, boardColor);
+
+    // plansza gry
     for(short x=0; x<9; ++x) {
         for(short y=0; y<9; ++y) {
             short tileOriginX = originX + (boardSize/9) * x + 1;
@@ -94,6 +105,17 @@ void Board::drawBoard () {
             }
         }
     }
+
+    // mine counter
+    std::string mineCounterText = "Mines left: " + std::to_string(10-Board::flaggedTiles); 
+    DrawRectangle(originX, originY+boardSize+10, tileSize*4, tileSize/2+20, revealedTileColor);
+    DrawText(mineCounterText.c_str(), originX +10, originY+boardSize+20, tileSize/2, BLACK);
+
+    //timer
+    std::string timerText = "Time: " + std::to_string(fullSeconds);
+    DrawRectangle(originX, originY+boardSize+20 + tileSize/2+20, tileSize*4, tileSize/2+20, revealedTileColor);
+    DrawText(timerText.c_str(), originX + 10, originY+boardSize+30 + tileSize/2+20, tileSize / 2, BLACK);
+
 
     if(currentGameState == GameState::lost) {
         youLost();
@@ -179,25 +201,7 @@ void Board::countNeighbours() { // liczenie sąsiadów - bomb
 
 }
 
-// void Board::revealNeighbouring(short tileX, short tileY) {
-//     bool stopCondition = false;
 
-//     for(short x=tileX+1; x<9; ++x) {
-//         if (!stopCondition)
-//             tileGrid[x][tileY].currentState = TileState::revealed;
-//         if (tileGrid[x][tileY].neighborCount!=0) 
-//             stopCondition=true;
-//     }
-
-//     stopCondition = false;
-
-//     for(short x=tileX-1; x>0; --x) {
-//         if (!stopCondition)
-//             tileGrid[x][tileY].currentState = TileState::revealed;
-//         if (tileGrid[x][tileY].neighborCount!=0) 
-//             stopCondition=true;
-//     }
-// }
 
 void Board::triggerEvent (short mouseX, short mouseY) { // główna funkcja odpowiadająca za wydarzenia w grze
 
