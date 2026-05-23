@@ -38,11 +38,20 @@ Texture2D Board::questionMarkTexture;
 Texture2D Board::smileyFaceTexture;
 Texture2D Board::winFaceTexture;
 Texture2D Board::loseFaceTexture;
+Texture2D Board::shockedFaceTexture;
 Texture2D Board::currentFaceTexture;
 short Board::revealedTiles;
 short Board::flaggedTiles;
 
 void Board::drawBoard () {
+
+    if (shockedTimer > 0.0f) {
+        shockedTimer -= GetFrameTime(); 
+        
+        if (shockedTimer <= 0.0f && currentGameState == GameState::play) {
+            Board::currentFaceTexture = Board::smileyFaceTexture;
+        }
+    }
 
     if (currentGameState == GameState::play) {
         gameTimer += GetFrameTime();
@@ -230,6 +239,12 @@ void Board::triggerEvent (short mouseX, short mouseY) { // główna funkcja odpo
     // jeżeli kliknięto w obrębie planszy
     bool boardClicked = mouseX >= originX && mouseX <= originX + boardSize && mouseY >= originY && mouseY <= originY + boardSize;
     if (boardClicked) {
+
+        if (currentGameState == GameState::setup || currentGameState == GameState::play) {
+            Board::currentFaceTexture = Board::shockedFaceTexture;
+            shockedTimer = 0.2f; // Ustawiamy stoper na pół sekundy
+        }
+
         mouseX -= originX;
         mouseY -= originY;
         // obliczenie na jakim Tile'u kliknięto

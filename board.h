@@ -23,9 +23,11 @@ public:
     static Texture2D smileyFaceTexture; 
     static Texture2D winFaceTexture;
     static Texture2D loseFaceTexture;
+    static Texture2D shockedFaceTexture;
     static Texture2D currentFaceTexture;
     float gameTimer;     
     short fullSeconds;
+    float shockedTimer;
     Board ();
     ~Board ();
     void drawBoard(); // funkcja rysująca planszę
