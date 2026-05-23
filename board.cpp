@@ -15,12 +15,19 @@ Color flagColor = {255, 55, 55, 255};
 bool showMines = false; // widoczność bomb po odpaleniu okna gry - do testowania
 
 Board::Board () {
+    originX = 10;
+    originY = 10;
     boardSize = 540;
     tileSize = boardSize/9 - 2; // -2 bo chcę zrobić margines
     currentGameState = GameState::setup;
 
     gameTimer = 0.0f;
     fullSeconds = 0;
+
+    resetButtonOriginX = originX + tileSize *4 + 20;
+    resetButtonOriginY = originY + boardSize + 20;
+    resetButtonSize = tileSize +40;
+
 }
 
 Board::~Board () {
@@ -28,6 +35,10 @@ Board::~Board () {
 
 Texture2D Board::flagTexture;
 Texture2D Board::questionMarkTexture; 
+Texture2D Board::smileyFaceTexture;
+Texture2D Board::winFaceTexture;
+Texture2D Board::loseFaceTexture;
+Texture2D Board::currentFaceTexture;
 short Board::revealedTiles;
 short Board::flaggedTiles;
 
@@ -38,8 +49,7 @@ void Board::drawBoard () {
         fullSeconds = (short)gameTimer; 
     }
 
-    originX = 10;
-    originY = 10;
+    
     DrawRectangle(originX, originY, boardSize, boardSize, boardColor);
 
     // plansza gry
@@ -115,6 +125,10 @@ void Board::drawBoard () {
     std::string timerText = "Time: " + std::to_string(fullSeconds);
     DrawRectangle(originX, originY+boardSize+20 + tileSize/2+20, tileSize*4, tileSize/2+20, revealedTileColor);
     DrawText(timerText.c_str(), originX + 10, originY+boardSize+30 + tileSize/2+20, tileSize / 2, BLACK);
+
+    // reset uśmiechnięta buźka
+    DrawRectangle(resetButtonOriginX, resetButtonOriginY, resetButtonSize, resetButtonSize, revealedTileColor);
+    DrawTextureEx(currentFaceTexture, {(float)resetButtonOriginX, (float)resetButtonOriginY}, 0, 4, WHITE);
 
 
     if(currentGameState == GameState::lost) {
@@ -205,6 +219,14 @@ void Board::countNeighbours() { // liczenie sąsiadów - bomb
 
 void Board::triggerEvent (short mouseX, short mouseY) { // główna funkcja odpowiadająca za wydarzenia w grze
 
+    bool resetClicked = mouseX >= resetButtonOriginX && mouseX <= resetButtonOriginX + resetButtonSize && 
+                        mouseY >= resetButtonOriginY && mouseY <= resetButtonOriginY + resetButtonSize;
+
+    if (resetClicked) {
+        resetGame();
+        return; 
+    }
+
     // jeżeli kliknięto w obrębie planszy
     bool boardClicked = mouseX >= originX && mouseX <= originX + boardSize && mouseY >= originY && mouseY <= originY + boardSize;
     if (boardClicked) {
@@ -252,15 +274,17 @@ void Board::youLost() {
     short messageBoxPosY = boardSize/5;
     DrawRectangle(messageBoxPosX, messageBoxPosY, 150, 40, lostMessageBoxColor);
     DrawText("You Lost!", messageBoxPosX+5, messageBoxPosY+5, 30, WHITE);
+    Board::currentFaceTexture = Board::loseFaceTexture;
 }
 
 void Board::checkIfWin() {
-    if(Board::revealedTiles == 71) {
+    if(Board::revealedTiles == 71 && currentGameState != GameState::lost) {
         currentGameState = GameState::won;
         short messageBoxPosX = boardSize/5;
         short messageBoxPosY = boardSize/5;
         DrawRectangle(messageBoxPosX, messageBoxPosY, 150, 40, wonMessageBoxColor);
         DrawText("You Won!", messageBoxPosX+5, messageBoxPosY+5, 30, WHITE);
+        Board::currentFaceTexture = Board::winFaceTexture;
     }
 }
 
@@ -286,6 +310,23 @@ void Board::revealNeighbouring(short tileX, short tileY) {
             if (dx == 0 && dy == 0) continue;
 
             revealNeighbouring(tileX + dx, tileY + dy);
+        }
+    }
+}
+
+void Board::resetGame() {
+    currentGameState = GameState::setup;
+    gameTimer = 0.0f;
+    fullSeconds = 0;
+    Board::revealedTiles = 0;
+    Board::flaggedTiles = 0;
+    Board::currentFaceTexture = Board::smileyFaceTexture;
+
+    for (short x = 0; x < 9; ++x) {
+        for (short y = 0; y < 9; ++y) {
+            tileGrid[x][y].isMine = false;
+            tileGrid[x][y].neighborCount = 0;
+            tileGrid[x][y].currentState = TileState::hidden;
         }
     }
 }

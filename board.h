@@ -13,10 +13,17 @@ public:
     short originX;
     short originY;
     short tileSize;
+    short resetButtonOriginX;
+    short resetButtonOriginY;
+    short resetButtonSize;
     static short revealedTiles;
     static short flaggedTiles;
     static Texture2D flagTexture; 
     static Texture2D questionMarkTexture; 
+    static Texture2D smileyFaceTexture; 
+    static Texture2D winFaceTexture;
+    static Texture2D loseFaceTexture;
+    static Texture2D currentFaceTexture;
     float gameTimer;     
     short fullSeconds;
     Board ();
@@ -30,6 +37,7 @@ public:
     void placeFlag(short, short);
     void youLost();
     void checkIfWin();
+    void resetGame();
 
 };
 

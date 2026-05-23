@@ -10,8 +10,12 @@ int main() {
     Board board = Board(); // stworzenie planszy
     Board::flagTexture = LoadTexture("flagTexture.png"); 
     Board::questionMarkTexture = LoadTexture("questionMarkTexture.png"); 
+    Board::smileyFaceTexture = LoadTexture("smiley_face.png");
+    Board::winFaceTexture = LoadTexture("win_face.png");
+    Board::loseFaceTexture = LoadTexture("lose_face.png");
     Board::revealedTiles = 0;
     Board::flaggedTiles = 0;
+    Board::currentFaceTexture = Board::smileyFaceTexture;
 
     // Game Loop
     while (WindowShouldClose()==false) {
